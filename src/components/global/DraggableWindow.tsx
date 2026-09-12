@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useId } from 'react';
 
 // Global z-index counter
 let globalZIndex = 10;
@@ -33,6 +33,7 @@ export default function DraggableWindow({
   const [zIndex, setZIndex] = useState(globalZIndex);
   const [isMobile, setIsMobile] = useState(false);
   const windowRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -166,7 +167,7 @@ export default function DraggableWindow({
       ref={windowRef}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="window-title"
+      aria-labelledby={titleId}
       tabIndex={0}
       className={`${
         isMobile 
@@ -197,7 +198,7 @@ export default function DraggableWindow({
         />
         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
         <div className="w-3 h-3 rounded-full bg-green-500"></div>
-        <span id="window-title" className="text-sm text-gray-300 flex-grow text-center font-semibold">
+        <span id={titleId} className="text-sm text-gray-300 flex-grow text-center font-semibold">
           {title}
         </span>
       </div>
@@ -230,4 +231,4 @@ export default function DraggableWindow({
       </div>
     </div>
   );
-} 
+}

@@ -134,6 +134,38 @@ Response rules:
 
 If a question is unrelated to my work or portfolio, say: "That's outside my area of expertise. Feel free to email me at ${userConfig.contact.email} and we can discuss further!"`;
 
+  const getLocalAnswer = (input: string): string | null => {
+    const query = input.toLowerCase();
+
+    if (/^(help|commands|\?)$/.test(query)) {
+      return 'Try asking about my skills, experience, education, projects, location, or contact details.';
+    }
+    if (query.includes('skill') || query.includes('technolog')) {
+      return `My focus areas include ${userConfig.skills.slice(0, 8).join(', ')}.`;
+    }
+    if (query.includes('experience') || query.includes('work') || query.includes('ibm')) {
+      return userConfig.experience
+        .map((experience) => `${experience.title} — ${experience.company} (${experience.period})`)
+        .join('\n');
+    }
+    if (query.includes('education') || query.includes('study') || query.includes('degree')) {
+      return userConfig.education
+        .map((item) => `${item.degree} in ${item.major} — ${item.institution} (${item.year})`)
+        .join('\n');
+    }
+    if (query.includes('project')) {
+      return `Featured projects:\n${userConfig.projects.map((project) => `- ${project.title}`).join('\n')}`;
+    }
+    if (query.includes('location') || query.includes('live') || query.includes('based')) {
+      return `I'm based in ${userConfig.location}.`;
+    }
+    if (query.includes('contact') || query.includes('email') || query.includes('reach')) {
+      return `You can reach me at ${userConfig.contact.email}.`;
+    }
+
+    return null;
+  };
+
   useEffect(() => {
     setChatHistory((prev) => ({
       ...prev,
@@ -164,6 +196,16 @@ If a question is unrelated to my work or portfolio, say: "That's outside my area
     }));
 
     setIsTyping(true);
+
+    const localAnswer = getLocalAnswer(userInput);
+    if (localAnswer) {
+      setChatHistory((prev) => ({
+        ...prev,
+        messages: [...prev.messages, { role: 'assistant', content: localAnswer }],
+      }));
+      setIsTyping(false);
+      return;
+    }
 
     try {
       const response = await fetch('/api/chat', {
@@ -198,7 +240,7 @@ If a question is unrelated to my work or portfolio, say: "That's outside my area
           ...prev.messages,
           {
             role: 'assistant',
-            content: `I'm having trouble processing that. Please email me at ${userConfig.contact.email}`,
+            content: `The AI chat is temporarily unavailable. You can ask about my skills, experience, education, projects, location, or contact details — or email me at ${userConfig.contact.email}.`,
           },
         ],
       }));

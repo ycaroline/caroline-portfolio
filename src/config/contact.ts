@@ -7,6 +7,7 @@ import type { ContactInfo } from '../types';
 
 export const contact: ContactInfo = {
   email: 'carolineyengo@outlook.com',
-  phone: '*4917237870720',
-  calendly: 'https://calendly.com/caros portfolio',
+  phone: '+4917237870720',
+  // Add a verified booking URL to show scheduling actions again.
+  calendly: '',
 };

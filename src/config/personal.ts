@@ -7,10 +7,10 @@ import type { PersonalInfo } from '../types';
 
 export const personal: PersonalInfo = {
   name: 'Forteresse Caroline Yengo',
-  role: 'Student - Media & Computer Science',
+  role: 'M.Sc. Media Informatics Candidate | Applied AI Systems · Technical Solutions · HCI',
   location: 'Wiesbaden, Germany',
-  email: 'carolineyemgo@outlook.com',
-  website: 'caros portfolio',
-  roleFocus: 'open',
+  email: 'carolineyengo@outlook.com',
+  website: 'https://carosportfolio.vercel.app',
+  roleFocus: 'applied AI, technical solutions, and human-centered computing',
   yearOfBirth: 2002,
 };

@@ -217,11 +217,37 @@ export default function Desktop({ initialBg, backgroundMap }: AppLayoutProps) {
         open={showTutorial}
         onClose={() => { setShowTutorial(false); localStorage.setItem('hasCompletedTutorial', 'true'); }}
         actions={{
-          openSpotlight: () => setIsSpotlightOpen(true),
-          openMissionControl: () => setIsMissionControlOpen(true),
-          openNotes: () => handleAppOpen('notes'),
-          openGitHub: () => handleAppOpen('github'),
-          openContact: () => setIsContactOpen(true),
+          openSpotlight: () => {
+            closeAllWindows();
+            setIsMissionControlOpen(false);
+            setIsContactOpen(false);
+            setIsSpotlightOpen(true);
+          },
+          openMissionControl: () => {
+            setIsSpotlightOpen(false);
+            setIsContactOpen(false);
+            setIsMissionControlOpen(true);
+          },
+          openNotes: () => {
+            setIsSpotlightOpen(false);
+            setIsMissionControlOpen(false);
+            setIsContactOpen(false);
+            closeAllWindows();
+            handleAppOpen('notes');
+          },
+          openGitHub: () => {
+            setIsSpotlightOpen(false);
+            setIsMissionControlOpen(false);
+            setIsContactOpen(false);
+            closeAllWindows();
+            handleAppOpen('github');
+          },
+          openContact: () => {
+            setIsSpotlightOpen(false);
+            setIsMissionControlOpen(false);
+            closeAllWindows();
+            setIsContactOpen(true);
+          },
           closeAll: closeAllWindows,
         }}
       />

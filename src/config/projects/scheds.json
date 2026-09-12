@@ -3,7 +3,6 @@
     "title": "Human–Computer Interaction Research",
     "description": "Designed and conducted a user study using a between-subject experiment to evaluate custom key layouts (n=10). Analyzed accuracy, reaction time, and player satisfaction to understand the impact of different input configurations on user performance.",
     "repoUrl": "https://github.com/ycaroline",
-    "liveUrl": "NO URL",
     "techStack": [
         "HCI",
         "C#",

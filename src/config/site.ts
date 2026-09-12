@@ -5,9 +5,9 @@
 import type { SEOConfig, ThemeConfig } from '../types';
 
 export const seo: SEOConfig = {
-  title: 'Forteresse Caroline Yengo - Software Developer',
-  description: 'Media & Computer Science student based in Germany specializing in...',
-  keywords: ['student', 'React', 'Node.js', 'Web Development', 'Egypt'],
+  title: 'Caroline Yengo | Applied AI Systems · Technical Solutions · HCI',
+  description: 'M.Sc. Media Informatics candidate working across applied AI systems, AI infrastructure, technical solutions, and human-centered computing.',
+  keywords: ['Applied AI', 'AI Infrastructure', 'Technical Solutions', 'Human-Computer Interaction', 'LLM Evaluation', 'OpenShift', 'Germany'],
 };
 
 export const theme: ThemeConfig = {

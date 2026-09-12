@@ -189,14 +189,14 @@ export default function Spotlight({ isOpen, onClose, actions }: SpotlightProps) 
         icon: <IoDocumentTextOutline className="text-gray-300" />,
         action: () => window.open(userConfig.website, '_blank'),
       },
-      {
+      ...(userConfig.contact.calendly ? [{
         id: 'action:calendly',
         title: 'Open Calendly',
         subtitle: userConfig.contact.calendly,
         category: 'Actions',
         icon: <IoDocumentTextOutline className="text-gray-300" />,
         action: () => window.open(userConfig.contact.calendly, '_blank'),
-      },
+      }] : []),
       {
         id: 'action:github',
         title: 'Open GitHub Viewer',
@@ -264,7 +264,7 @@ export default function Spotlight({ isOpen, onClose, actions }: SpotlightProps) 
         { name: 'category', weight: 0.1 },
         { name: 'keywords', weight: 0.1 },
       ],
-      threshold: 0.38,
+      threshold: 0.28,
       ignoreLocation: true,
       includeScore: true,
     });
@@ -283,15 +283,7 @@ export default function Spotlight({ isOpen, onClose, actions }: SpotlightProps) 
       .search(query)
       .slice(0, 20)
       .map((r: FuseResult<SpotlightItem>) => r.item);
-    const pinned = items.filter(i => pinnedIds.includes(i.id));
-    // Deduplicate by id while placing pinned first
-    const seen = new Set<string>();
-    const combined = [...pinned, ...searched].filter(i => {
-      if (seen.has(i.id)) return false;
-      seen.add(i.id);
-      return true;
-    });
-    return combined.slice(0, 20);
+    return searched;
   }, [query, items, fuse]);
 
   // Group results by category with fixed order

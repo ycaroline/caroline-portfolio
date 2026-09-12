@@ -366,7 +366,7 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
 
             
                 {/* Courses */}
-                <button
+                {userConfig.courses.length > 0 && <button
                     type="button"
                     className="bg-gray-800/50 p-4 rounded-lg hover:bg-gray-700/50 transition-colors text-left"
                     onClick={() => handleSectionClick('courses')}
@@ -379,7 +379,7 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
                         <h3 className="text-xl font-semibold text-gray-200">Courses</h3>
                     </div>
                     <p className="text-gray-400">Check out courses I have completed</p>
-                </button>
+                </button>}
 
                 {/* Skills */}
                 <button
@@ -439,4 +439,4 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
     );
 };
 
-export default NotesApp; 
+export default NotesApp;

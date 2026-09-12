@@ -7,22 +7,22 @@ import type { Experience } from '../types';
 
 export const experience: readonly Experience[] = [
     {
-        title: 'IBM - Tech Sales ',
-        company: 'Work Student',
+        title: 'IBM | Technical Sales & AI Infrastructure',
+        company: 'Working Student — Technology / Storage',
         location: 'Frankfurt, Germany',
-        period: '2024 - ',
-        description: 'Coordinated CRM reporting and project roadmaps between management and sales, analyzed collaboration across engineering, R&D, and sales, and developed strategies for customer reactivation and researching deployment strategies for large language models on hyperconverged systems in a cloud-based environment.',
-        technologies: ['CRM Reporting', 'Techzone', 'AI Infrastructure', 'LLM'],
+        period: '2024 – 2026',
+        description: 'Supported technical sales for enterprise storage and AI infrastructure through customer demos, proof-of-concepts, solution sizing, and account analysis. Evaluated AI agents and RAG/MCP-supported workflows, and researched LLM inference performance, tenant isolation, and GPU infrastructure on IBM Fusion HCI for my master’s thesis.',
+        technologies: ['Technical Sales', 'Solution Sizing', 'AI Infrastructure', 'LLM Evaluation', 'RAG', 'MCP', 'OpenShift'],
         images: [
             {
-                url: 'public/towerone.jpg',
-                alt: 'Proteinea',
+                url: '/towerone.jpg',
+                alt: 'IBM office at Tower One Frankfurt',
             },
         ],
     },
     {
-        title: 'Mercedes-Benz | Software developer culturet',
-        company: 'Internship',
+        title: 'Mercedes-Benz | Software Developer Culture & FOSS',
+        company: 'Intern & Bachelor’s Thesis Student',
         location: 'Stuttgart, Germany',
         period: '2023 - 2024',
         description: 'Supported company-wide open-source (FOSS) initiatives and conducted internal surveys among software developers to generate data-driven insights for improving the development environment. Also contributed to content and media management for internal and external communication of tech topics.',
@@ -30,15 +30,15 @@ export const experience: readonly Experience[] = [
         images: [
             {
                 url: '/IMG_7031.jpg',
-                alt: 'Luftborn',
+                alt: 'Mercedes-Benz technology event',
             },
             {
                 url: '/IMG_7030.jpg',
-                alt: 'Luftborn',
+                alt: 'Mercedes-Benz technology event',
             },
             {
                 url: '/IMG_7032.PNG',
-                alt: 'Luftborn',
+                alt: 'Mercedes-Benz technology event',
             },
         ],
     },
@@ -52,7 +52,7 @@ export const experience: readonly Experience[] = [
         images: [
             {
                 url: '/IMG_7027.jpg',
-                alt: 'Offenburg University',
+                alt: 'Bayerischer Rundfunk production',
             }
         ],
     }

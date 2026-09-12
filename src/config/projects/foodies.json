@@ -2,9 +2,10 @@
     "id": "foodies",
     "title": "Game Development Project - SELFA",
     "description": "Developed interactive applications across the full development cycle, from concept and planning to technical implementation. Focused on gameplay mechanics, user interaction, and system design.",
-    "repoUrl": "https://www.canva.com/design/DAFlzexNQsQ/eyrZDm-dwYDH1vRWXYI-Ow/view?utm_content=DAFlzexNQsQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hec86201db4",
+    "repoUrl": "https://github.com/ycaroline",
+    "liveUrl": "https://www.canva.com/design/DAFlzexNQsQ/eyrZDm-dwYDH1vRWXYI-Ow/view?utm_content=DAFlzexNQsQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hec86201db4",
     "techStack": [
-        "C+",
+        "C++",
         "Figma",
         "Unity",
         "Java"

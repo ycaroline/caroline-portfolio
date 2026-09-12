@@ -6,7 +6,7 @@ import type { Education, Course } from '../types';
 
 export const education: readonly Education[] = [
   {
-    degree: 'Bachelor of Media and Information Systems',
+    degree: 'Bachelor of Science',
     major: 'Media and Information Systems',
     institution: 'Hochschule Offenburg',
     location: 'Offenburg, Germany',
@@ -23,14 +23,14 @@ Focused on a combination of graphics, media marketing, analytics, and computer s
     `,
     images: [
       {
-        url: '/hjsoffenburg.jpg', // oder public/
+        url: '/hjsoffenbug.jpg',
         alt: 'Hochschule Offenburg',
         description: 'Campus of Hochschule Offenburg',
       },
     ],
   },
   {
-    degree: 'Master of Media Informatics',
+    degree: 'Master of Science',
     major: 'Media Informatics',
     institution: 'Hochschule RheinMain',
     location: 'Wiesbaden, Germany',
@@ -46,7 +46,7 @@ Advanced coursework in:
     `,
     images: [
       {
-        url: '/public/hswiesbaden.jpg',
+        url: '/hswiesbaden.jpg',
         alt: 'Hochschule RheinMain Master',
         description: 'Master studies at Hochschule RheinMain',
       },
@@ -54,5 +54,5 @@ Advanced coursework in:
   },
 ] as const;
 
-// 💡 Leerer Export für Kompatibilität mit AppLayout.tsx
+// Kept for compatibility; the Notes UI hides this section while empty.
 export const courses: readonly never[] = [] as const;
