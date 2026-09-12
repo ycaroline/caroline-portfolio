@@ -1,0 +1,39 @@
+{
+    "id": "fadedtextrestoration",
+    "title": "VR Application for Mental Mindfulness",
+    "description": "Developed an immersive virtual reality application designed to support mental mindfulness and stress reduction for students through guided virtual environments.",
+    "repoUrl": "https://github.com/ycaroline",
+    "liveUrl": "https://drive.google.com/file/d/1YzbDOz0iO9PcaHTHyTEYqh3QtY6Oe9vx/view?usp=sharings",
+    "techStack": [
+        "Unity",
+        "C",
+        "User Experience"
+    ],
+    "structure": {
+        "root": "fadedTextRestoration",
+        "children": [
+            {
+                "name": "README.md",
+                "type": "file"
+            },
+            {
+                "name": "app.py",
+                "type": "file"
+            },
+            {
+                "name": "requirements.txt",
+                "type": "file"
+            }
+        ]
+    },
+    "images": [
+        {
+            "url": "/VR1.jpg",
+            "alt": "Faded Text Restoration"
+        },
+        {
+            "url": "/VR2.jpg",
+            "alt": "Faded Text Restoration"
+        }   
+    ]
+}
