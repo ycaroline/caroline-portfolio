@@ -42,12 +42,13 @@ export default function MacToolbar({
   onShuffleBackground,
   onOpenAdmin,
 }: MacToolbarProps) {
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [currentDateTime, setCurrentDateTime] = useState<Date | null>(null);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [showSignature, setShowSignature] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setCurrentDateTime(new Date());
     const timer = setInterval(() => {
       setCurrentDateTime(new Date());
     }, 60000);
@@ -245,7 +246,7 @@ export default function MacToolbar({
     <>
       <div className='sticky top-0 z-50 md:hidden bg-transparent text-white h-12 px-8 flex items-center justify-between text-base font-medium'>
         <span className='font-semibold'>
-          {formatIPhoneTime(currentDateTime)}
+          {currentDateTime ? formatIPhoneTime(currentDateTime) : '--:--'}
         </span>
         <div className='flex items-center gap-1.5'>
           <IoCellular size={20} />
@@ -312,7 +313,7 @@ export default function MacToolbar({
             aria-label='Open search'
           />
           <span className='cursor-default'>
-            {formatMacDate(currentDateTime)}
+            {currentDateTime ? formatMacDate(currentDateTime) : '—'}
           </span>
         </div>
       </div>
