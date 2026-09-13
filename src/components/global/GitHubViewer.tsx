@@ -29,6 +29,9 @@ const GitHubViewer = ({ isOpen, onClose, selectedProjectId }: GitHubViewerProps)
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quickLook, setQuickLook] = useState<Project | null>(null);
 
+  const hasSpecificRepository = (repoUrl: string | undefined) =>
+    Boolean(repoUrl && repoUrl.replace(/\/$/, '') !== userConfig.social.github.replace(/\/$/, ''));
+
   const toggleNode = (path: string) => {
     const newExpandedNodes = new Set(expandedNodes);
     if (newExpandedNodes.has(path)) {
@@ -188,7 +191,7 @@ const GitHubViewer = ({ isOpen, onClose, selectedProjectId }: GitHubViewerProps)
                       ))}
                     </div>
                     <div className="flex gap-4">
-                      <a
+                      {hasSpecificRepository(project.repoUrl) && <a
                         href={project.repoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -197,7 +200,7 @@ const GitHubViewer = ({ isOpen, onClose, selectedProjectId }: GitHubViewerProps)
                       >
                         <FaGithub />
                         <span>Repository</span>
-                      </a>
+                      </a>}
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
@@ -272,7 +275,7 @@ const GitHubViewer = ({ isOpen, onClose, selectedProjectId }: GitHubViewerProps)
                         </div>
                       )}
                     </div>
-                    {selectedProject.repoUrl && (
+                    {hasSpecificRepository(selectedProject.repoUrl) && (
                       <div className="mt-4">
                         <a
                           href={selectedProject.repoUrl}
@@ -334,14 +337,14 @@ const GitHubViewer = ({ isOpen, onClose, selectedProjectId }: GitHubViewerProps)
               >
                 Open Details
               </button>
-              <a
+              {hasSpecificRepository(quickLook!.repoUrl) && <a
                 href={quickLook!.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-gray-300 hover:text-blue-400"
               >
                 Open Repo
-              </a>
+              </a>}
               {quickLook!.liveUrl && (
                 <a
                   href={quickLook!.liveUrl}
@@ -361,4 +364,4 @@ const GitHubViewer = ({ isOpen, onClose, selectedProjectId }: GitHubViewerProps)
   );
 };
 
-export default GitHubViewer; 
+export default GitHubViewer;

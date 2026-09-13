@@ -67,6 +67,9 @@ export default function ContactWidget({ open, onClose }: ContactWidgetProps) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
+        if (res.status === 503 || data?.code === 'UNCONFIGURED') {
+          throw new Error(`The contact form is temporarily unavailable. Please email me directly at ${userConfig.contact.email}.`);
+        }
         throw new Error((data && (data.message || data.error)) || 'Failed to send message');
       }
       setSuccess(true);
@@ -116,6 +119,7 @@ export default function ContactWidget({ open, onClose }: ContactWidgetProps) {
               <label className="text-sm text-gray-300">Message</label>
               <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} className="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-white/40 resize-y" placeholder="How can I help?" disabled={disabled} />
             </div>
+            <p className="text-xs text-gray-400">Your details are used only to respond to your message.</p>
             {error && (
               <div className="text-red-300 text-sm bg-red-500/10 border border-red-500/30 rounded-md p-2">{error}</div>
             )}

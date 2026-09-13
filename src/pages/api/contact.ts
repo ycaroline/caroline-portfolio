@@ -17,6 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
   // Basic validations
   if (!name || !email || !message) return bad('Missing required fields', 400);
   if (typeof name !== 'string' || typeof email !== 'string' || typeof message !== 'string') return bad('Invalid field types', 400);
+  if (name.trim().length > 120 || email.trim().length > 254 || message.trim().length > 5000) return bad('One or more fields are too long', 400);
   if (!/.+@.+\..+/.test(email)) return bad('Invalid email', 400);
   if (company && String(company).trim() !== '') return bad('Spam detected', 400); // honeypot
   if (typeof t === 'number' && t < 5) return bad('Too fast. Please take a moment before sending.', 429);
@@ -30,18 +31,12 @@ export const POST: APIRoute = async ({ request }) => {
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 
-  const headers = request.headers;
-  const ip = headers.get('x-forwarded-for')?.split(',')[0]?.trim() || headers.get('cf-connecting-ip') || 'unknown';
-  const userAgent = headers.get('user-agent') || 'unknown';
-
   try {
     const { error } = await supabase.from('contact_messages').insert({
-      name,
-      email,
-      message,
+      name: name.trim(),
+      email: email.trim(),
+      message: message.trim(),
       time_on_page: typeof t === 'number' ? t : null,
-      ip,
-      user_agent: userAgent,
     });
 
     if (error) {

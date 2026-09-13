@@ -34,8 +34,19 @@ export default function ResumeViewer({ isOpen, onClose }: ResumeViewerProps) {
       className="w-[90%] h-[90%] max-w-5xl"
       initialSize={{ width: 800, height: 600 }}
     >
-      <div className="h-full bg-white">
-        <figure className="h-full">
+      <div className="h-full bg-white flex flex-col">
+        <div className="flex items-center justify-between gap-3 border-b border-gray-200 bg-gray-50 px-4 py-2 text-sm">
+          <span className="font-medium text-gray-700">Curriculum Vitae</span>
+          <div className="flex gap-2">
+            <a href="/resume.pdf" target="_blank" rel="noreferrer noopener" className="rounded-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-500">
+              English PDF
+            </a>
+            <a href="/lebenslauf.pdf" target="_blank" rel="noreferrer noopener" className="rounded-md border border-gray-300 px-3 py-1.5 text-gray-700 hover:bg-gray-100">
+              Deutsch PDF
+            </a>
+          </div>
+        </div>
+        <figure className="min-h-0 flex-1">
           <object 
             data={userConfig.resume.localPath} 
             type="application/pdf" 
@@ -55,4 +66,4 @@ export default function ResumeViewer({ isOpen, onClose }: ResumeViewerProps) {
       </div>
     </DraggableWindow>
   );
-} 
+}
