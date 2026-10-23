@@ -61,16 +61,7 @@ export default function Desktop({ initialBg, backgroundMap }: AppLayoutProps) {
   const activeApps = state.windows;
 
   useEffect(() => {
-    const lastBg = localStorage.getItem('lastBackground');
     const hasCompletedTutorial = localStorage.getItem('hasCompletedTutorial') === 'true';
-
-    if (lastBg === initialBg) {
-      const bgKeys = Object.keys(backgroundMap);
-      const availableBgs = bgKeys.filter((bg) => bg !== lastBg);
-      const newBg =
-        availableBgs[Math.floor(Math.random() * availableBgs.length)];
-      setCurrentBg(newBg);
-    }
 
     // Only show tutorial if user hasn't completed it before
     if (!hasCompletedTutorial) {
