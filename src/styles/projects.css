@@ -57,3 +57,14 @@
 @container (max-width: 900px) { .project-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @container (max-width: 560px) { .project-grid, .project-detail-grid { grid-template-columns: minmax(0,1fr); } .projects-heading h2 { font-size: 29px; } }
 @media(max-width:767px) { .project-window { top: 82px !important; bottom: 110px !important; margin: 0 12px !important; max-height: none; max-width: none; } .project-browser { padding: 18px; } .project-preview { padding: 12px; } .project-preview-panel { padding: 16px; max-height: calc(100dvh - 24px); } .project-gallery-nav button, .project-preview-panel header > button { width: 44px; height: 44px; } }
+
+/* The physical computing gallery shares one quiet visual treatment. */
+[data-project-id="scheds"] .project-main-image,
+[data-project-id="scheds"] .project-cover { padding: 0; overflow: hidden; background: #eeeae2; }
+[data-project-id="scheds"] .project-main-image img,
+[data-project-id="scheds"] .project-cover img { display: block; object-fit: cover; }
+[data-project-id="scheds"] .project-thumbnails { gap: 9px; }
+[data-project-id="scheds"] .project-thumbnails button { padding: 0; border-radius: 7px; background: #eeeae2; }
+[data-project-id="scheds"] .project-thumbnails img { display: block; object-fit: cover; }
+[data-project-id="scheds"] .project-thumbnails button[aria-pressed='true'] { outline: 2px solid #65724d; outline-offset: 2px; border: 1px solid #f8f7f2; }
+[data-project-id="scheds"] .project-preview-image { background: #eeeae2; }

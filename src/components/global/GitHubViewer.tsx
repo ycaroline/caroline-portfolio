@@ -104,7 +104,7 @@ export default function GitHubViewer({ isOpen, onClose, selectedProjectId }: Git
         {!selectedProject ? <>
           <header className="projects-heading"><p className="project-eyebrow">SELECTED WORK</p><h2>Projects & explorations</h2><p>AI · Digital Solutions · Human–Computer Interaction</p></header>
           <div className="project-grid">
-            {userConfig.projects.map(project => <article className="project-card" key={project.id}>
+            {userConfig.projects.map(project => <article className="project-card" data-project-id={project.id} key={project.id}>
               {project.images[0] && <button type="button" className="project-cover" aria-label={`Preview images: ${project.title}`} onClick={() => openPreview(project)}>
                 <ProjectImage image={project.images[0]} />
                 <span className="project-cover-hint"><FaSearchPlus aria-hidden="true" /> Preview images</span>
@@ -121,7 +121,7 @@ export default function GitHubViewer({ isOpen, onClose, selectedProjectId }: Git
           <button type="button" className="project-back" onClick={() => { setSelectedProject(null); setActiveImageIndex(0); scrollRef.current?.scrollTo({ top: 0 }); }}><FaArrowLeft aria-hidden="true" />Back to Projects</button>
           <header className="projects-heading project-detail-heading"><p className="project-eyebrow">{selectedProject.category || 'Project'}</p><h2>{selectedProject.title}</h2><p>{selectedProject.description}</p><ProjectTags project={selectedProject} /><ProjectLinks project={selectedProject} /></header>
           <div className="project-detail-grid">
-            <section className="project-gallery" aria-label="Project images">
+            <section className="project-gallery" data-project-id={selectedProject.id} aria-label="Project images">
               {activeImage && <>
                 <button type="button" className="project-main-image" aria-label={`Enlarge image ${activeImageIndex + 1}: ${activeImage.alt || selectedProject.title}`} onClick={() => openPreview(selectedProject, activeImageIndex)}><ProjectImage image={activeImage} /><span className="project-cover-hint"><FaSearchPlus aria-hidden="true" /> Enlarge image</span></button>
                 <div className="project-gallery-nav"><button type="button" aria-label="Previous screenshot" disabled={selectedProject.images.length < 2} onClick={() => setActiveImageIndex(index => (index - 1 + selectedProject.images.length) % selectedProject.images.length)}><FaArrowLeft /></button><span aria-live="polite">{activeImageIndex + 1} / {selectedProject.images.length}</span><button type="button" aria-label="Next screenshot" disabled={selectedProject.images.length < 2} onClick={() => setActiveImageIndex(index => (index + 1) % selectedProject.images.length)}><FaArrowRight /></button></div>
@@ -138,7 +138,7 @@ export default function GitHubViewer({ isOpen, onClose, selectedProjectId }: Git
     </DraggableWindow>
     {preview && <div className="project-preview" role="dialog" aria-modal="true" aria-label={`Image preview: ${preview.project.title}`}>
       <div className="project-preview-backdrop" onClick={closePreview} />
-      <div className="project-preview-panel">
+      <div className="project-preview-panel" data-project-id={preview.project.id}>
         <header><div><p className="project-eyebrow">PROJECT GALLERY</p><h2>{preview.project.title}</h2></div><button type="button" ref={previewCloseRef} onClick={closePreview} aria-label="Close image preview"><FaTimes /></button></header>
         <ProjectImage image={preview.project.images[preview.index]} className="project-preview-image" />
         <div className="project-gallery-nav"><button type="button" aria-label="Previous preview image" disabled={preview.project.images.length < 2} onClick={() => cyclePreview(-1)}><FaArrowLeft /></button><span aria-live="polite">{preview.index + 1} / {preview.project.images.length}</span><button type="button" aria-label="Next preview image" disabled={preview.project.images.length < 2} onClick={() => cyclePreview(1)}><FaArrowRight /></button></div>

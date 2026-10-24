@@ -11,14 +11,14 @@
   ],
   "images": [
     {
-      "url": "/hci-controllers.webp",
-      "alt": "Custom USB controllers built from cardboard, copper tape and keyboard membranes.",
-      "description": "Custom USB controllers built from cardboard, copper tape and keyboard membranes."
+      "url": "/hci-hero-v2.webp",
+      "alt": "Illustrative staging of the two handmade controllers in front of cooperative gameplay.",
+      "description": "Custom USB controllers for cooperative play. AI-assisted staging based on the original prototype photographs."
     },
     {
-      "url": "/hci-game.webp",
-      "alt": "Fireboy and Watergirl was the existing game used in the study; it was not developed by our team.",
-      "description": "Fireboy and Watergirl was the existing game used in the study; it was not developed by our team."
+      "url": "/hci-detail-v2.webp",
+      "alt": "Illustrative close-up of copper tape circuits and keyboard membrane buttons.",
+      "description": "Copper tape and keyboard membranes form the inputs. AI-assisted detail illustration based on the prototype."
     },
     {
       "url": "/hci-gameplay.webp",
@@ -26,9 +26,9 @@
       "description": "Cooperative gameplay used to compare performance and usability across input conditions."
     },
     {
-      "url": "/hci-keyboard.webp",
-      "alt": "Standard condition: two players sharing a keyboard with WASD and arrow keys.",
-      "description": "Standard condition: two players sharing a keyboard with WASD and arrow keys."
+      "url": "/hci-controls.svg",
+      "alt": "Shared keyboard condition: Player 1 uses WASD; Player 2 uses the arrow keys.",
+      "description": "Baseline condition: two players share one keyboard using WASD and the arrow keys."
     }
   ],
   "category": "HCI · Team project",
