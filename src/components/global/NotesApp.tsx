@@ -6,6 +6,7 @@ import {
 import { userConfig } from '../../config/index';
 import DraggableWindow from './DraggableWindow';
 import CompetitionSection from './CompetitionSection';
+import ExperienceSection from './ExperienceSection';
 import { personalHobbies } from '../../config/personalHobbies';
 
 export type Section =
@@ -162,33 +163,7 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
     );
 
     const renderExperience = () => (
-        <div className="space-y-6">
-            {renderBackButton()}
-            <h2 className="text-2xl font-bold text-gray-200 mb-6">Professional Experience</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {experience.map((item, index) => {
-                    const itemId = `experience-${index}`;
-                    return (
-                        <div key={itemId} className="bg-gray-800/50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                            <h3 className="text-xl font-semibold text-gray-200 mb-2">{item.title}</h3>
-                            <div className="text-gray-300 mb-2">{item.company}, {item.location}</div>
-                            <div className="text-gray-400 mb-3">{item.period}</div>
-                            <p className="text-gray-300 mb-4">{item.description}</p>
-                            {item.technologies && (
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {item.technologies.map((tech, i) => (
-                                        <span key={i} className="px-2 py-1 bg-gray-700 rounded text-xs text-gray-300">
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-                            {item.images && item.images.length > 0 && renderImageCarousel(itemId, item.images)}
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+        <ExperienceSection experience={experience} onNavigate={handleSectionClick} />
     );
 
     const renderCourses = () => (
@@ -406,11 +381,11 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
                 x: Math.max(16, (window.innerWidth - Math.min(1060, window.innerWidth - 48)) / 2),
                 y: Math.max(88, (window.innerHeight - Math.min(760, window.innerHeight - 160)) / 2)
             }}
-            className={`notes-window w-[93vw] max-h-[90vh] flex flex-col ${activeSection === 'competitions' ? 'notes-window--competitions' : ''}`}
+            className={`notes-window w-[93vw] max-h-[90vh] flex flex-col ${activeSection === 'competitions' || activeSection === 'experience' ? 'notes-window--competitions' : ''}`}
             initialSize={{ width: Math.min(1060, window.innerWidth - 48), height: Math.min(760, window.innerHeight - 160) }}
         >
             <div className="flex flex-col flex-grow min-h-0 h-full">
-                <div className={`overflow-y-auto flex-grow min-h-0 ${activeSection === 'competitions' ? 'competition-scroll' : 'p-4 md:p-6'}`}>
+                <div className={`overflow-y-auto flex-grow min-h-0 ${activeSection === 'competitions' || activeSection === 'experience' ? 'competition-scroll' : 'p-4 md:p-6'}`}>
                     {activeSection === 'menu' && renderMenu()}
                     {activeSection === 'education' && renderEducation()}
                     {activeSection === 'experience' && renderExperience()}

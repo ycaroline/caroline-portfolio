@@ -7,6 +7,9 @@ import type { Experience } from '../types';
 
 export const experience: readonly Experience[] = [
     {
+        id: 'ibm',
+        organization: 'IBM',
+        highlights: ['Supported technical sales through demos, proof-of-concepts, solution sizing and account analysis.', 'Evaluated AI agents and RAG/MCP-supported workflows.', 'Researched LLM inference performance, tenant isolation and GPU infrastructure for my master’s thesis.'],
         title: 'IBM | Technical Sales & AI Infrastructure',
         company: 'Working Student — Technology / Storage',
         location: 'Frankfurt, Germany',
@@ -15,12 +18,22 @@ export const experience: readonly Experience[] = [
         technologies: ['Technical Sales', 'Solution Sizing', 'AI Infrastructure', 'LLM Evaluation', 'RAG', 'MCP', 'OpenShift'],
         images: [
             {
+                url: '/ibm-storage-on-tour-source.png',
+                presentation: 'ibm-event-collage',
+                alt: 'Original photographs from IBM Storage On Tour in Frankfurt, including the team presentation.',
+                description: 'IBM Storage On Tour · Frankfurt · 21 April 2026. Original event photographs, rearranged for this gallery.',
+            },
+            {
                 url: '/towerone.jpg',
                 alt: 'IBM office at Tower One Frankfurt',
+                description: 'IBM office · Tower One, Frankfurt',
             },
         ],
     },
     {
+        id: 'mercedes-benz',
+        organization: 'Mercedes-Benz',
+        highlights: ['Supported company-wide open-source initiatives.', 'Conducted developer surveys to inform improvements to the development environment.', 'Contributed to content and media management for technology communication.'],
         title: 'Mercedes-Benz | Software Developer Culture & FOSS',
         company: 'Intern & Bachelor’s Thesis Student',
         location: 'Stuttgart, Germany',
@@ -30,19 +43,25 @@ export const experience: readonly Experience[] = [
         images: [
             {
                 url: '/IMG_7031.jpg',
-                alt: 'Mercedes-Benz technology event',
+                alt: 'Mercedes-Benz developer collaboration and technology communication.',
+                description: 'Mercedes-Benz · Developer collaboration',
             },
             {
                 url: '/IMG_7030.jpg',
-                alt: 'Mercedes-Benz technology event',
+                alt: 'Mercedes-Benz developer working with a laptop in a vehicle.',
+                description: 'Mercedes-Benz · Developer perspectives',
             },
             {
                 url: '/IMG_7032.PNG',
-                alt: 'Mercedes-Benz technology event',
+                alt: 'Original Mercedes-Benz FOSS/CON event collage including the team photograph.',
+                description: 'Mercedes-Benz · FOSS/CON team and event impressions',
             },
         ],
     },
     {
+        id: 'bayerischer-rundfunk',
+        organization: 'Bayerischer Rundfunk',
+        highlights: ['Produced social media content for Instagram and Snapchat.', 'Analyzed performance and managed community interaction.', 'Wrote production scripts and coordinated collaboration with actors.'],
         title: 'Bayerischer Rundfunk | Social Media Manager',
         company:'Social Media Manager',
         location: 'Munich, Germany',
@@ -52,7 +71,8 @@ export const experience: readonly Experience[] = [
         images: [
             {
                 url: '/IMG_7027.jpg',
-                alt: 'Bayerischer Rundfunk production',
+                alt: 'Original social media content examples from Bayerischer Rundfunk productions.',
+                description: 'Bayerischer Rundfunk · Social media content examples',
             }
         ],
     }

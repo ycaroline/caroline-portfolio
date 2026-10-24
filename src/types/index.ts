@@ -14,6 +14,7 @@ export interface Image {
   alt?: string;
   /** Optional description displayed below the image */
   description?: string;
+  presentation?: 'ibm-event-collage';
 }
 
 // ============================================
@@ -74,6 +75,9 @@ export interface Course {
 // ============================================
 
 export interface Experience {
+  id?: string;
+  organization?: string;
+  highlights?: readonly string[];
   title: string;
   company: string;
   location: string;
