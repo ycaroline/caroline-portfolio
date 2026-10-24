@@ -1,20 +1,9 @@
-import { useEffect, useState } from 'react';
-import { FaGithub, FaExternalLinkAlt, FaFolder, FaFile, FaChevronLeft, FaLink } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
+import { FaArrowLeft, FaArrowRight, FaExternalLinkAlt, FaGithub, FaSearchPlus, FaTimes } from 'react-icons/fa';
 import { userConfig } from '../../config/index';
+import type { Image, Project } from '../../types';
 import DraggableWindow from './DraggableWindow';
-
-type FileNode = {
-  name: string;
-  type: 'file' | 'directory';
-  children?: readonly FileNode[];
-};
-
-type ProjectStructure = {
-  root: string;
-  children: readonly FileNode[];
-};
-
-type Project = typeof userConfig.projects[0];
+import '../../styles/projects.css';
 
 interface GitHubViewerProps {
   isOpen: boolean;
@@ -22,346 +11,140 @@ interface GitHubViewerProps {
   selectedProjectId?: string;
 }
 
-const GitHubViewer = ({ isOpen, onClose, selectedProjectId }: GitHubViewerProps) => {
+function ProjectImage({ image, className = '' }: { image: Image; className?: string }) {
+  const [failed, setFailed] = useState(false);
+  useEffect(() => setFailed(false), [image.url]);
+  return failed ? (
+    <div className={`project-image-fallback ${className}`} role="img" aria-label={image.alt || 'Project image unavailable'}>
+      <span>Image unavailable</span>
+    </div>
+  ) : <img src={image.url} alt={image.alt || 'Project image'} className={className} onError={() => setFailed(true)} />;
+}
+
+function ProjectLinks({ project }: { project: Project }) {
+  const specificRepo = project.repoUrl && project.repoUrl.replace(/\/$/, '') !== userConfig.social.github.replace(/\/$/, '');
+  return <div className="project-links">
+    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"><FaExternalLinkAlt aria-hidden="true" />{project.liveLabel || 'View project'}</a>}
+    {specificRepo && <a href={project.repoUrl} target="_blank" rel="noopener noreferrer"><FaGithub aria-hidden="true" />View code</a>}
+  </div>;
+}
+
+function ProjectTags({ project }: { project: Project }) {
+  return <ul className="project-tags" aria-label="Project skills and technologies">{project.techStack.map(tech => <li key={tech}>{tech}</li>)}</ul>;
+}
+
+export default function GitHubViewer({ isOpen, onClose, selectedProjectId }: GitHubViewerProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
-  const [showStructure, setShowStructure] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [quickLook, setQuickLook] = useState<Project | null>(null);
+  const [preview, setPreview] = useState<{ project: Project; index: number } | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const previewCloseRef = useRef<HTMLButtonElement>(null);
+  const previewOpenerRef = useRef<HTMLElement | null>(null);
 
-  const hasSpecificRepository = (repoUrl: string | undefined) =>
-    Boolean(repoUrl && repoUrl.replace(/\/$/, '') !== userConfig.social.github.replace(/\/$/, ''));
-
-  const toggleNode = (path: string) => {
-    const newExpandedNodes = new Set(expandedNodes);
-    if (newExpandedNodes.has(path)) {
-      newExpandedNodes.delete(path);
-    } else {
-      newExpandedNodes.add(path);
-    }
-    setExpandedNodes(newExpandedNodes);
-  };
-
-  const renderFileTree = (node: FileNode, path: string = '') => {
-    const currentPath = path ? `${path}/${node.name}` : node.name;
-    const isExpanded = expandedNodes.has(currentPath);
-
-    return (
-      <div key={currentPath} className="ml-4">
-        <div
-          className="flex items-center cursor-pointer hover:bg-gray-700/50 p-1 rounded"
-          role="treeitem"
-          aria-expanded={node.type === 'directory' ? isExpanded : undefined}
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if ((e.key === 'Enter' || e.key === ' ') && node.type === 'directory') {
-              e.preventDefault();
-              toggleNode(currentPath);
-            }
-          }}
-          onClick={() => node.type === 'directory' && toggleNode(currentPath)}
-        >
-          {node.type === 'directory' ? (
-            <FaFolder className="text-yellow-500 mr-2" />
-          ) : (
-            <FaFile className="text-blue-400 mr-2" />
-          )}
-          <span className="text-gray-200">{node.name}</span>
-        </div>
-        {node.type === 'directory' && isExpanded && node.children && (
-          <div className="ml-4" role="group">
-            {node.children.map((child) => renderFileTree(child, currentPath))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const renderProjectStructure = (projectStructure: ProjectStructure) => {
-    // Create the root node first
-    return (
-      <div role="tree" aria-label="Project structure">
-        <div className="flex items-center p-1 rounded">
-          <FaFolder className="text-yellow-500 mr-2" />
-          <span className="text-gray-200 font-bold">{projectStructure.root}</span>
-        </div>
-        <div className="ml-4">
-          {projectStructure.children.map((child) => renderFileTree(child, projectStructure.root))}
-        </div>
-      </div>
-    );
-  };
-
-  const handleProjectClick = (project: Project) => {
+  const openProject = (project: Project) => {
     setSelectedProject(project);
-    setShowStructure(true);
     setActiveImageIndex(0);
+    scrollRef.current?.scrollTo({ top: 0 });
   };
-
-  const handleBackClick = () => {
-    setShowStructure(false);
-    setSelectedProject(null);
+  const openPreview = (project: Project, index = 0) => {
+    previewOpenerRef.current = document.activeElement as HTMLElement | null;
+    setPreview({ project, index });
   };
-
-  const handleNextImage = () => {
-    if (selectedProject) {
-      setActiveImageIndex((prevIndex) => 
-        prevIndex + 1 >= selectedProject.images.length ? 0 : prevIndex + 1
-      );
-    }
+  const closePreview = () => {
+    setPreview(null);
+    previewOpenerRef.current?.focus();
   };
+  const cyclePreview = (direction: number) => setPreview(current => current && ({
+    ...current, index: (current.index + direction + current.project.images.length) % current.project.images.length,
+  }));
 
-  const handlePrevImage = () => {
-    if (selectedProject) {
-      setActiveImageIndex((prevIndex) => 
-        prevIndex - 1 < 0 ? selectedProject.images.length - 1 : prevIndex - 1
-      );
-    }
-  };
-
-  // Deep-link support: open a project directly when prop changes
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) { setPreview(null); return; }
     if (selectedProjectId) {
-      const proj = userConfig.projects.find(p => p.id === selectedProjectId) || null;
-      if (proj) {
-        setSelectedProject(proj);
-        setShowStructure(true);
-        setActiveImageIndex(0);
-      }
+      const project = userConfig.projects.find(item => item.id === selectedProjectId);
+      if (project) { setSelectedProject(project); setActiveImageIndex(0); }
     }
-  }, [selectedProjectId, isOpen]);
+  }, [isOpen, selectedProjectId]);
+
+  useEffect(() => {
+    if (!preview) return;
+    previewCloseRef.current?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); closePreview(); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); cyclePreview(1); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); cyclePreview(-1); }
+      if (event.key === 'Tab') {
+        const dialog = previewCloseRef.current?.closest('[role="dialog"]');
+        const controls = dialog?.querySelectorAll<HTMLButtonElement>('button:not([disabled])');
+        if (!controls?.length) return;
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [preview?.project.id]);
 
   if (!isOpen) return null;
+  const width = Math.min(1120, window.innerWidth - 48);
+  const height = Math.min(740, window.innerHeight - 160);
+  const activeImage = selectedProject?.images[activeImageIndex];
 
-  return (
-    <>
-      <DraggableWindow
-        title={showStructure ? selectedProject?.title || 'GitHub Projects' : 'GitHub Projects'}
-        onClose={onClose}
-        initialPosition={{ 
-          x: Math.floor(window.innerWidth * 0.2), 
-          y: Math.floor(window.innerHeight * 0.2) 
-        }}
-        className="w-[93vw] md:max-w-4xl max-h-[90vh] flex flex-col"
-        initialSize={{ width: 800, height: 600 }}
-      >
-      <div className="flex flex-col flex-grow min-h-0 h-full">
-        <div className="overflow-y-auto flex-grow min-h-0 p-4 md:p-6">
-          {!showStructure ? (
-            <>
-              <h2 className="text-2xl font-bold mb-4 text-gray-200">My Projects</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {userConfig.projects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="bg-gray-800/50 p-4 rounded-lg cursor-pointer transition-colors hover:bg-gray-700/50 focus:outline-none focus:ring-2 focus:ring-white/30"
-                    onClick={() => handleProjectClick(project)}
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') { e.preventDefault(); handleProjectClick(project); }
-                      if (e.key === ' ') { e.preventDefault(); setQuickLook(project); }
-                    }}
-                  >
-                    {project.images && project.images.length > 0 && (
-                      <div className="relative w-full h-48 mb-3 overflow-hidden rounded-lg">
-                        <img 
-                          src={project.images[0].url} 
-                          alt={project.images[0].alt} 
-                          className="w-full h-full object-cover"
-                        />
-                        <button
-                          className="absolute bottom-2 right-2 text-xs bg-white/10 text-white border border-white/20 rounded px-2 py-1 hover:bg-white/20"
-                          onClick={(e) => { e.stopPropagation(); setQuickLook(project); }}
-                        >
-                          Quick Look
-                        </button>
-                      </div>
-                    )}
-                    <h3 className="text-xl font-semibold mb-2 text-gray-200">{project.title}</h3>
-                    <p className="text-gray-400 mb-2">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {project.techStack.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-1 bg-gray-700 rounded text-xs text-gray-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex gap-4">
-                      {hasSpecificRepository(project.repoUrl) && <a
-                        href={project.repoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm hover:text-blue-400 text-gray-300"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <FaGithub />
-                        <span>Repository</span>
-                      </a>}
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm hover:text-blue-400 text-gray-300"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <FaExternalLinkAlt />
-                          <span>Live Demo</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
+  return <>
+    <DraggableWindow
+      title={selectedProject?.title || 'Selected Projects'}
+      onClose={onClose}
+      initialPosition={{ x: Math.max(16, (window.innerWidth - width) / 2), y: Math.max(88, (window.innerHeight - height) / 2 - 15) }}
+      initialSize={{ width, height }}
+      className="project-window"
+    >
+      <div className="project-browser" ref={scrollRef}>
+        {!selectedProject ? <>
+          <header className="projects-heading"><p className="project-eyebrow">SELECTED WORK</p><h2>Projects & explorations</h2><p>AI · Digital Solutions · Human–Computer Interaction</p></header>
+          <div className="project-grid">
+            {userConfig.projects.map(project => <article className="project-card" key={project.id}>
+              {project.images[0] && <button type="button" className="project-cover" aria-label={`Preview images: ${project.title}`} onClick={() => openPreview(project)}>
+                <ProjectImage image={project.images[0]} />
+                <span className="project-cover-hint"><FaSearchPlus aria-hidden="true" /> Preview images</span>
+              </button>}
+              <div className="project-card-content"><p className="project-eyebrow">{project.category || 'Project'}</p><h3><button type="button" onClick={() => openProject(project)}>{project.title}</button></h3><p className="project-summary">{project.description}</p>
+                {project.contribution && <p className="project-contribution"><strong>My contribution</strong>{project.contribution}</p>}
+                <ProjectTags project={project} />
+                <button type="button" className="project-action" onClick={() => openProject(project)}>View project <FaArrowRight aria-hidden="true" /></button>
+                <ProjectLinks project={project} />
               </div>
-            </>
-          ) : (
-            <div>
-              <button
-                onClick={handleBackClick}
-                aria-label="Back to Projects"
-                className="flex items-center gap-2 text-gray-300 hover:text-gray-100 mb-4"
-              >
-                <FaChevronLeft />
-                <span>Back to Projects</span>
-              </button>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-200">Project Structure</h3>
-                  <div className="font-mono text-sm">
-                    {selectedProject && renderProjectStructure(selectedProject.structure as unknown as ProjectStructure)}
-                  </div>
-                </div>
-                
-                {selectedProject && selectedProject.images && selectedProject.images.length > 0 && (
-                  <div className="bg-gray-800/50 rounded-lg p-4">
-                    <h3 className="text-xl font-semibold mb-4 text-gray-200">Screenshots</h3>
-                    <div className="relative">
-                      <div className="rounded-lg overflow-hidden mb-2">
-                        <img 
-                          src={selectedProject.images[activeImageIndex].url} 
-                          alt={selectedProject.images[activeImageIndex].alt}
-                          className="w-full object-cover" 
-                        />
-                      </div>
-                      
-                      <div className="text-sm text-gray-300 mb-3">
-                        {selectedProject.images[activeImageIndex].description}
-                      </div>
-                      
-                      {selectedProject.images.length > 1 && (
-                        <div className="flex justify-between mt-2">
-                          <button 
-                            onClick={handlePrevImage}
-                            aria-label="Previous screenshot"
-                            className="bg-gray-700 hover:bg-gray-600 text-white rounded-full w-8 h-8 flex items-center justify-center"
-                          >
-                            ←
-                          </button>
-                          <span className="text-gray-400">
-                            {activeImageIndex + 1} / {selectedProject.images.length}
-                          </span>
-                          <button 
-                            onClick={handleNextImage}
-                            aria-label="Next screenshot"
-                            className="bg-gray-700 hover:bg-gray-600 text-white rounded-full w-8 h-8 flex items-center justify-center"
-                          >
-                            →
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    {hasSpecificRepository(selectedProject.repoUrl) && (
-                      <div className="mt-4">
-                        <a
-                          href={selectedProject.repoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm hover:text-blue-400 text-gray-300 bg-gray-700/50 p-2 rounded-lg"
-                        >
-                          <FaGithub />
-                          <span>Visit GitHub Repository</span>
-                        </a>
-                      </div>
-                    )}
-                    {selectedProject.liveUrl && (
-                      <div className="mt-4">
-                        <a
-                          href={selectedProject.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm hover:text-blue-400 text-gray-300 bg-gray-700/50 p-2 rounded-lg"
-                        >
-                          <FaLink />
-                          <span>Visit Live Site</span>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+            </article>)}
+          </div>
+        </> : <>
+          <button type="button" className="project-back" onClick={() => { setSelectedProject(null); setActiveImageIndex(0); scrollRef.current?.scrollTo({ top: 0 }); }}><FaArrowLeft aria-hidden="true" />Back to Projects</button>
+          <header className="projects-heading project-detail-heading"><p className="project-eyebrow">{selectedProject.category || 'Project'}</p><h2>{selectedProject.title}</h2><p>{selectedProject.description}</p><ProjectTags project={selectedProject} /><ProjectLinks project={selectedProject} /></header>
+          <div className="project-detail-grid">
+            <section className="project-gallery" aria-label="Project images">
+              {activeImage && <>
+                <button type="button" className="project-main-image" aria-label={`Enlarge image ${activeImageIndex + 1}: ${activeImage.alt || selectedProject.title}`} onClick={() => openPreview(selectedProject, activeImageIndex)}><ProjectImage image={activeImage} /><span className="project-cover-hint"><FaSearchPlus aria-hidden="true" /> Enlarge image</span></button>
+                <div className="project-gallery-nav"><button type="button" aria-label="Previous screenshot" disabled={selectedProject.images.length < 2} onClick={() => setActiveImageIndex(index => (index - 1 + selectedProject.images.length) % selectedProject.images.length)}><FaArrowLeft /></button><span aria-live="polite">{activeImageIndex + 1} / {selectedProject.images.length}</span><button type="button" aria-label="Next screenshot" disabled={selectedProject.images.length < 2} onClick={() => setActiveImageIndex(index => (index + 1) % selectedProject.images.length)}><FaArrowRight /></button></div>
+                <p className="project-caption" aria-live="polite">{activeImage.description || activeImage.alt}</p>
+                <div className="project-thumbnails">{selectedProject.images.map((image, index) => <button type="button" key={image.url} onClick={() => setActiveImageIndex(index)} aria-label={`Show image ${index + 1}: ${image.alt || selectedProject.title}`} aria-pressed={index === activeImageIndex}><ProjectImage image={image} /></button>)}</div>
+              </>}
+            </section>
+            <section className="project-story" aria-label="Project overview">
+              {selectedProject.sections?.map(section => <div key={section.title}><h3>{section.title}</h3><p>{section.text}</p></div>)}
+            </section>
+          </div>
+        </>}
       </div>
     </DraggableWindow>
-
-    {quickLook && (
-      <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Quick Look">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setQuickLook(null)} />
-        <div className="relative mx-auto mt-16 w-[92%] max-w-3xl rounded-xl border border-white/10 bg-gray-900/95 shadow-2xl">
-          <div className="p-4 md:p-6">
-            <div className="flex items-start justify-between mb-3">
-              <h3 className="text-xl font-semibold text-white">{quickLook!.title}</h3>
-              <button className="text-gray-400 hover:text-gray-200" onClick={() => setQuickLook(null)}>✕</button>
-            </div>
-            {quickLook!.images && quickLook!.images.length > 0 && (
-              <div className="rounded-lg overflow-hidden mb-3">
-                <img src={quickLook!.images[0].url} alt={quickLook!.images[0].alt} className="w-full object-cover" />
-              </div>
-            )}
-            <p className="text-gray-300 mb-3">{quickLook!.description}</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {quickLook!.techStack.map((tech) => (
-                <span key={tech} className="px-2 py-1 bg-gray-700 rounded text-xs text-gray-300">{tech}</span>
-              ))}
-            </div>
-            <div className="flex gap-3">
-              <button
-                className="text-sm text-blue-400 hover:text-blue-300"
-                onClick={() => { setSelectedProject(quickLook!); setShowStructure(true); setQuickLook(null); }}
-              >
-                Open Details
-              </button>
-              {hasSpecificRepository(quickLook!.repoUrl) && <a
-                href={quickLook!.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-300 hover:text-blue-400"
-              >
-                Open Repo
-              </a>}
-              {quickLook!.liveUrl && (
-                <a
-                  href={quickLook!.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-green-400 hover:text-green-300"
-                >
-                  Open Live
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
+    {preview && <div className="project-preview" role="dialog" aria-modal="true" aria-label={`Image preview: ${preview.project.title}`}>
+      <div className="project-preview-backdrop" onClick={closePreview} />
+      <div className="project-preview-panel">
+        <header><div><p className="project-eyebrow">PROJECT GALLERY</p><h2>{preview.project.title}</h2></div><button type="button" ref={previewCloseRef} onClick={closePreview} aria-label="Close image preview"><FaTimes /></button></header>
+        <ProjectImage image={preview.project.images[preview.index]} className="project-preview-image" />
+        <div className="project-gallery-nav"><button type="button" aria-label="Previous preview image" disabled={preview.project.images.length < 2} onClick={() => cyclePreview(-1)}><FaArrowLeft /></button><span aria-live="polite">{preview.index + 1} / {preview.project.images.length}</span><button type="button" aria-label="Next preview image" disabled={preview.project.images.length < 2} onClick={() => cyclePreview(1)}><FaArrowRight /></button></div>
+        <p className="project-caption" aria-live="polite">{preview.project.images[preview.index].description || preview.project.images[preview.index].alt}</p>
+        <button type="button" className="project-action" onClick={() => { const project = preview.project; closePreview(); openProject(project); }}>View project details <FaArrowRight aria-hidden="true" /></button>
       </div>
-    )}
-    </>
-  );
-};
-
-export default GitHubViewer;
+    </div>}
+  </>;
+}

@@ -1,39 +1,40 @@
 {
-    "id": "fadedtextrestoration",
-    "title": "VR Application for Mental Mindfulness",
-    "description": "Developed an immersive virtual reality application designed to support mental mindfulness and stress reduction for students through guided virtual environments.",
-    "repoUrl": "https://github.com/ycaroline",
-    "liveUrl": "https://drive.google.com/file/d/1YzbDOz0iO9PcaHTHyTEYqh3QtY6Oe9vx/view?usp=sharings",
-    "techStack": [
-        "Unity",
-        "C",
-        "User Experience"
-    ],
-    "structure": {
-        "root": "fadedTextRestoration",
-        "children": [
-            {
-                "name": "README.md",
-                "type": "file"
-            },
-            {
-                "name": "app.py",
-                "type": "file"
-            },
-            {
-                "name": "requirements.txt",
-                "type": "file"
-            }
-        ]
+  "id": "fadedtextrestoration",
+  "title": "VR Mindfulness for Students",
+  "description": "An immersive Unity application designed to give students a short break through guided virtual environments and mindfulness activities.",
+  "repoUrl": "https://github.com/ycaroline",
+  "liveUrl": "https://drive.google.com/file/d/1YzbDOz0iO9PcaHTHyTEYqh3QtY6Oe9vx/view?usp=sharings",
+  "techStack": [
+    "Unity",
+    "C",
+    "User Experience"
+  ],
+  "images": [
+    {
+      "url": "/VR1.jpg",
+      "alt": "VR mindfulness environment selection",
+      "description": "A selection of guided virtual environments and mindfulness activities."
     },
-    "images": [
-        {
-            "url": "/VR1.jpg",
-            "alt": "Faded Text Restoration"
-        },
-        {
-            "url": "/VR2.jpg",
-            "alt": "Faded Text Restoration"
-        }   
-    ]
+    {
+      "url": "/VR2.jpg",
+      "alt": "VR application onboarding and headset guidance",
+      "description": "In-world onboarding combines headset guidance with introductory instructions."
+    }
+  ],
+  "category": "Immersive experience",
+  "liveLabel": "Watch project video",
+  "sections": [
+    {
+      "title": "Purpose",
+      "text": "The application was designed to support moments of mindfulness and a short break from student life through an immersive virtual environment."
+    },
+    {
+      "title": "Experience",
+      "text": "The documented experience includes headset guidance, introductory instructions and a choice of themed environments and activities."
+    },
+    {
+      "title": "Project material",
+      "text": "The gallery shows the environment-selection interface and onboarding. The linked video provides a closer look at the application."
+    }
+  ]
 }
