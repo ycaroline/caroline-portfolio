@@ -7,6 +7,7 @@ import { userConfig } from '../../config/index';
 import DraggableWindow from './DraggableWindow';
 import CompetitionSection from './CompetitionSection';
 import ExperienceSection from './ExperienceSection';
+import InterestsSection from './InterestsSection';
 import { personalHobbies } from '../../config/personalHobbies';
 
 export type Section =
@@ -231,25 +232,8 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
     };
 
     const renderPersonalHobbies = () => (
-        <div className="space-y-6">
-            {renderBackButton()}
-            <h2 className="text-2xl font-bold text-gray-200 mb-6">Personal Hobbies</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {personalHobbies.map((item, index) => {
-                    const itemId = `hobbies-${index}`;
-                    return (
-                        <div key={itemId} className="bg-gray-800/50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                            <h3 className="text-xl font-semibold text-gray-200 mb-2">{item.title}</h3>
-                            <div className="text-gray-300 mb-2">{item.description}, {item.location}</div>
-                            <div className="text-gray-400 mb-3">{item.year}</div>
-                            {item.images && item.images.length > 0 && renderImageCarousel(itemId, item.images)}
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+        <InterestsSection hobbies={personalHobbies} onNavigate={handleSectionClick} />
     );
-
 
     const renderCompetitions = () => (
         <CompetitionSection competitions={competitions} onNavigate={handleSectionClick} showCourses={courses.length > 0} />
@@ -367,7 +351,7 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
             case 'experience': return 'Experience Notes';
             case 'courses': return 'Courses Notes';
             case 'skills': return 'Skills Notes';
-            case 'hobbies': return 'Personal Hobbies Notes';
+            case 'hobbies': return 'Interests';
             case 'competitions': return 'Competitions Notes';
             default: return 'Notes';
         }
@@ -381,11 +365,11 @@ const NotesApp = ({ isOpen, onClose, section }: NotesAppProps) => {
                 x: Math.max(16, (window.innerWidth - Math.min(1060, window.innerWidth - 48)) / 2),
                 y: Math.max(88, (window.innerHeight - Math.min(760, window.innerHeight - 160)) / 2)
             }}
-            className={`notes-window w-[93vw] max-h-[90vh] flex flex-col ${activeSection === 'competitions' || activeSection === 'experience' ? 'notes-window--competitions' : ''}`}
+            className={`notes-window w-[93vw] max-h-[90vh] flex flex-col ${activeSection === 'competitions' || activeSection === 'experience' || activeSection === 'hobbies' ? 'notes-window--competitions' : ''}`}
             initialSize={{ width: Math.min(1060, window.innerWidth - 48), height: Math.min(760, window.innerHeight - 160) }}
         >
             <div className="flex flex-col flex-grow min-h-0 h-full">
-                <div className={`overflow-y-auto flex-grow min-h-0 ${activeSection === 'competitions' || activeSection === 'experience' ? 'competition-scroll' : 'p-4 md:p-6'}`}>
+                <div className={`overflow-y-auto flex-grow min-h-0 ${activeSection === 'competitions' || activeSection === 'experience' || activeSection === 'hobbies' ? 'competition-scroll' : 'p-4 md:p-6'}`}>
                     {activeSection === 'menu' && renderMenu()}
                     {activeSection === 'education' && renderEducation()}
                     {activeSection === 'experience' && renderExperience()}

@@ -1,0 +1,48 @@
+.interests-layout { display: grid; grid-template-columns: 166px minmax(0,1fr); min-height: 100%; background: #eaf3ed; color: #253b35; }
+.interests-layout *, .interest-preview * { box-sizing: border-box; }
+.interests-sidebar { padding: 28px 12px; border-right: 1px solid #cdded6; background: #e2eee7; }
+.interests-sidebar > p { margin: 0 10px 22px; color: #58746a; font-size: 9px; font-weight: 600; letter-spacing: .12em; }
+.interests-sidebar button { display: flex; align-items: center; gap: 11px; width: 100%; padding: 12px 10px; margin-bottom: 6px; border: 0; border-radius: 6px; color: #4f6b60; background: transparent; font-size: 12px; text-align: left; cursor: pointer; }
+.interests-sidebar button:hover { background: #d5e6dc; }
+.interests-sidebar button[aria-current] { background: #c8ddce; color: #274f40; font-weight: 600; }
+.interests-content { min-width: 0; padding: 30px 24px; }
+.interests-heading { margin-bottom: 24px; }
+.interests-heading > p { margin: 0 0 10px; font-size: 9px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #537b64; }
+.interests-heading h2 { margin: 0 0 8px; font: 400 36px/1.12 Georgia,serif; letter-spacing: -.035em; }
+.interests-heading > span { display: block; font: italic 16px/1.6 Georgia,serif; color: #5c7a6b; }
+.interests-grid { display: grid; grid-template-columns: minmax(0,2fr) minmax(0,1.12fr); gap: 14px; }
+.interest-story { padding: 12px; border: 1px solid #c9ded1; border-radius: 8px; background: #f6faf7; min-width: 0; }
+.interest-story > header { min-height: 75px; padding: 1px 2px 12px; }
+.interest-story h3 { margin: 0 0 7px; font: 400 22px/1.15 Georgia,serif; letter-spacing: -.025em; }
+.interest-story header p { margin: 0; color: #587667; font-size: 11px; line-height: 1.6; }
+.interest-story header > span { display: inline-block; margin-top: 9px; border-radius: 4px; padding: 4px 7px; font-size: 9px; color: #476d56; background: #deede2; }
+.interest-photo-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.interest-story--sports .interest-photo-grid { grid-template-columns: minmax(0,1fr); }
+.interest-story--food { grid-column: 1 / -1; }
+.interest-story--food > header { display: flex; align-items: start; justify-content: space-between; gap: 15px; min-height: 0; }
+.interest-story figure { margin: 0; min-width: 0; }
+.interest-story figure button { position: relative; display: block; width: 100%; aspect-ratio: 2/3; border: 0; padding: 0; border-radius: 5px; overflow: hidden; background: #deebe3; cursor: zoom-in; }
+.interest-story figure img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.interest-story--food figure button { aspect-ratio: 4/3; }
+.interest-story--food figure img { object-fit: cover; }
+.interest-enlarge { position: absolute; right: 7px; bottom: 7px; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: #f6faf7dc; color: #355a46; font-size: 11px; }
+.interest-story figcaption { margin-top: 7px; color: #567362; font-size: 9px; line-height: 1.5; }
+.interest-image-fallback { display: grid; place-items: center; width: 100%; height: 100%; color: #4b6d58; font-size: 12px; }
+.interests-layout button:focus-visible, .interest-preview button:focus-visible { outline: 3px solid #0f62fe; outline-offset: 3px; }
+.interest-preview { position: fixed; inset: 0; width: min(1000px,calc(100vw - 40px)); max-height: calc(100dvh - 40px); margin: auto; padding: 20px; background: #eef5f0; border: 1px solid #c6dacd; color: #253b35; border-radius: 10px; box-shadow: 0 20px 80px #0005; }
+.interest-preview::backdrop { background: #172f26d9; backdrop-filter: blur(4px); }
+.interest-preview > header { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 12px; }
+.interest-preview > header p { margin: 0; color: #466e55; font-size: 11px; }
+.interest-preview button { display: grid; place-items: center; width: 38px; height: 38px; background: #e0ece4; color: #35563f; border: 1px solid #c5d9cc; border-radius: 5px; cursor: pointer; flex-shrink: 0; }
+.interest-preview-image { width: 100%; height: min(65dvh,650px); }
+.interest-preview-image img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.interest-preview-nav { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 12px; }
+.interest-preview-nav p { margin: 0; font-size: 11px; color: #4f705b; text-align: center; line-height: 1.6; }
+@container (max-width: 760px) { .interests-layout { grid-template-columns: minmax(0,1fr); } .interests-sidebar { display: flex; gap: 4px; padding: 10px; border-right: 0; border-bottom: 1px solid #cdded6; overflow-x: auto; } .interests-sidebar > p { display: none; } .interests-sidebar button { width: auto; white-space: nowrap; margin: 0; padding: 9px 10px; font-size: 11px; } .interests-sidebar button svg { display: none; } .interests-content { padding: 22px 18px; } }
+@container (max-width: 570px) { .interests-grid { grid-template-columns: minmax(0,1fr); } .interest-story--food { grid-column: auto; } .interest-story--sports .interest-photo-grid { max-width: 300px; margin: auto; } .interest-story > header { min-height: 0; } .interests-heading h2 { font-size: 31px; } .interest-story h3 { font-size: 23px; } .interest-story header p { font-size: 12px; } .interest-story figcaption { font-size: 10px; } }
+@media(max-width:767px) { .interest-preview { width: calc(100vw - 24px); padding: 14px; } }
+
+.interest-story--food .interest-photo-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.interest-story--food figure button { aspect-ratio: 3/4; }
+.interest-story--food figure img { object-fit: contain; }
+@container (max-width: 570px) { .interest-story--food .interest-photo-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .interest-story--food figure:first-child { grid-column: 1 / -1; max-width: 300px; width: 100%; justify-self: center; } }

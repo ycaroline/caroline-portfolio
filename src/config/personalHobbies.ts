@@ -12,15 +12,17 @@ export const personalHobbies: readonly personalHobbie[] = [
     location: 'Various Countries',
     year: '2024',
     images: [
-      { 
-        url: '/public/Strand2.jpg', 
-        alt: 'Travel 1', 
-        description: 'Beach day in Djerba' 
+      { url: '/hobby-travel-turtle.webp', alt: 'Caroline beside a giant tortoise', description: 'A little closer to nature' },
+      { url: '/hobby-travel-helmet.webp', alt: 'Caroline wearing a helmet in the desert', description: 'Desert adventures' },
+      {
+        url: '/hobby-travel-beach.webp',
+        alt: 'Camels on the beach in Djerba at sunset',
+        description: 'Beach day in Djerba'
       },
-      { 
-        url: '/public/Tunesien.jpg', 
-        alt: 'Travel 2', 
-        description: 'Exploring Tunesia' 
+      {
+        url: '/hobby-travel-tunisia.webp',
+        alt: 'Caroline exploring street art in Tunisia',
+        description: 'Exploring Tunisia'
       },
     ],
   },
@@ -30,10 +32,10 @@ export const personalHobbies: readonly personalHobbie[] = [
     location: 'Local gyms and outdoors',
     year: '2024',
     images: [
-      { 
-        url: '/public/Sport.JPG', 
-        alt: 'weight training', 
-        description: 'Training day' 
+      {
+        url: '/hobby-sports.webp',
+        alt: 'Gym mirror photograph with a friend',
+        description: 'Training day'
       },
     ],
   },
@@ -43,15 +45,16 @@ export const personalHobbies: readonly personalHobbie[] = [
     location: 'Various Cities',
     year: '2024',
     images: [
-      { 
-        url: '/public/Burger.jpg', 
-        alt: 'New restaurant', 
-        description: 'Enjoying good burgers' 
+      { url: '/hobby-food-matcha.webp', alt: 'Caroline enjoying a matcha drink', description: 'Matcha moments' },
+      {
+        url: '/hobby-food-burger.webp',
+        alt: 'New restaurant',
+        description: 'Enjoying good burgers'
       },
-      { 
-        url: '/public/Pizza.jpg', 
-        alt: 'Food spot', 
-        description: 'testing local cuisines' 
+      {
+        url: '/hobby-food-pizza.webp',
+        alt: 'Food spot',
+        description: 'testing local cuisines'
       },
     ],
   },
