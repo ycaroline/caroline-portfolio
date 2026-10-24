@@ -1,32 +1,56 @@
 ---
 import { getImage } from 'astro:assets';
 import AppLayout from '../layouts/AppLayout';
-import macBackground1 from '../assets/images/mac-background1.jpg';
 import macBackground2 from '../assets/images/mac-background2.jpg';
 import macBackground3 from '../assets/images/mac-background3.jpg';
 
-const backgrounds = [macBackground1, macBackground2, macBackground3];
-
-function getRandomBackground() {
-  return `bg-${Math.floor(Math.random() * backgrounds.length) + 1}`;
-}
-
 const optimizedBackgrounds = await Promise.all(
-  backgrounds.map((bg) =>
-    getImage({
-      src: bg,
-      width: 3500,
-    })
-  )
+  [macBackground2, macBackground3].map((bg) => getImage({ src: bg, width: 3500 }))
 );
-
-const backgroundMap = Object.fromEntries(
-  optimizedBackgrounds.map((bg, index) => [`bg-${index + 1}`, bg.src])
-);
+const stoneWallpaper = `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" fill="#f2f0e9"/><rect width="100%" height="100%" filter="url(#grain)" opacity=".035"/></svg>`;
+const backgroundMap = {
+  'bg-1': `data:image/svg+xml,${encodeURIComponent(stoneWallpaper)}`,
+  'bg-2': optimizedBackgrounds[0].src,
+  'bg-3': optimizedBackgrounds[1].src,
+};
 ---
 
-<AppLayout
-  client:load
-  initialBg="bg-1"
-  backgroundMap={backgroundMap}
-/>
+<AppLayout client:load initialBg="bg-1" backgroundMap={backgroundMap} />
+<section class="desktop-introduction" aria-label="Introduction">
+  <div class="introduction-copy">
+    <h1><span>Caroline</span><em>Yengo.</em></h1>
+    <p class="specialties">AI <span aria-hidden="true">·</span> Digital Solutions <span aria-hidden="true">·</span> Human–Computer Interaction</p>
+    <p class="curiosity">A curious mind. Always exploring.</p>
+  </div>
+</section>
+
+<style>
+  .desktop-introduction {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    padding: 105px 8vw 145px;
+    color: #252521;
+  }
+  .introduction-copy { max-width: 900px; }
+  h1 { margin: 0 0 32px; letter-spacing: -.065em; line-height: .88; font-size: clamp(74px, 10.5vw, 160px); font-weight: 750; }
+  h1 span, h1 em { display: block; }
+  h1 em { font-family: 'Iowan Old Style', 'Baskerville', 'Palatino Linotype', Georgia, serif; font-weight: 400; letter-spacing: -.065em; line-height: 1.02; }
+  .specialties { margin: 0; font-size: clamp(13px, 1.35vw, 19px); line-height: 1.65; letter-spacing: .025em; text-wrap: balance; }
+  .specialties span { padding: 0 .35em; }
+  .curiosity { margin: 24px 0 0; font: 400 clamp(17px, 1.65vw, 24px)/1.5 'Iowan Old Style', Baskerville, Georgia, serif; color: #55554c; }
+  @media (max-width: 600px) {
+    .desktop-introduction { padding: 110px 8vw 165px; }
+    h1 { font-size: clamp(68px, 18vw, 105px); margin-bottom: 26px; }
+    .specialties { max-width: 310px; font-size: 14px; }
+    .curiosity { max-width: 280px; margin-top: 22px; font-size: 19px; }
+  }
+  @media (max-height: 560px) {
+    .desktop-introduction { padding-top: 90px; padding-bottom: 110px; }
+    h1 { font-size: clamp(48px, 12vh, 85px); margin-bottom: 12px; }
+    .curiosity { margin-top: 10px; }
+  }
+</style>
