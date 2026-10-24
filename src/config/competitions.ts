@@ -37,6 +37,8 @@ export const competitions: readonly Competition[] = [
     tags: ['UI/UX', 'IBM Bob', 'Prompting', 'Prototyping'],
     images: [
       { url: '/watsonx-sales-incentive-cover.webp', alt: 'Sales Incentive Transparency concept cover with the IBM Bob mascot, labelled 2026 Participant.', description: 'Portfolio concept visualization · IBM Bob' },
+      { url: '/watsonx-overlay-concept.webp', alt: 'Concept visualization of an incentive guidance overlay beside a sales workspace.', description: 'Overlay concept · Retrospective UI/UX visualization' },
+      { url: '/watsonx-bob-prototyping.webp', alt: 'Illustrative development workspace showing prompting, testing and refinement with IBM Bob.', description: 'Working with IBM Bob · Illustrative prototyping workflow, not an actual product screenshot' },
     ],
     sections: [
       { title: 'The challenge', text: 'Sales employees need to navigate incentive guidance spread across different resources. The proposal explores a clearer way to find relevant information without first knowing which team owns it.' },
