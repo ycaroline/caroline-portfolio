@@ -101,10 +101,17 @@ export interface personalHobbie { //ExtraCurricularRole
 // ============================================
 
 export interface Competition {
+  id: string;
   title: string;
   description: string;
   achievement: string;
   year: string;
+  status: string;
+  badges: readonly string[];
+  concept: string;
+  summary: string;
+  tags: readonly string[];
+  sections: readonly { title: string; text?: string; items?: readonly string[] }[];
   images?: readonly Image[];
 }
 
